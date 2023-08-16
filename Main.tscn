@@ -1,12 +1,20 @@
-[gd_scene load_steps=8 format=3 uid="uid://de3ou7ba2p32f"]
+[gd_scene load_steps=11 format=3 uid="uid://de3ou7ba2p32f"]
 
+[ext_resource type="Script" path="res://Main.gd" id="1_lnnda"]
 [ext_resource type="Texture2D" uid="uid://jc8v7ceb04s7" path="res://art/playerGrey_up1.png" id="1_lnuro"]
 [ext_resource type="Script" path="res://Player.gd" id="1_vn4at"]
 [ext_resource type="Texture2D" uid="uid://pm2cm3d2wy2m" path="res://art/playerGrey_up2.png" id="2_mbyy1"]
+[ext_resource type="PackedScene" uid="uid://bg3vv5uki8ym4" path="res://Mob.tscn" id="2_vppr2"]
 [ext_resource type="Texture2D" uid="uid://br3qj17kfe856" path="res://art/playerGrey_walk1.png" id="3_cjb3i"]
 [ext_resource type="Texture2D" uid="uid://dws7k4aa5e87u" path="res://art/playerGrey_walk2.png" id="4_vx4no"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_dekmy"]
+[sub_resource type="Curve2D" id="Curve2D_emob4"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, 0, 0, 0, 0, 0, 480, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0)
+}
+point_count = 5
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0pfw4"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -31,11 +39,29 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gocwg"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fgyxy"]
 radius = 28.0
 height = 72.0
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_lnnda")
+mob_scene = ExtResource("2_vppr2")
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(240, 450)
+
+[node name="MobPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_emob4")
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 
 [node name="Player" type="Area2D" parent="."]
 position = Vector2(1, 1)
@@ -44,10 +70,14 @@ metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 scale = Vector2(0.5, 0.5)
-sprite_frames = SubResource("SpriteFrames_dekmy")
+sprite_frames = SubResource("SpriteFrames_0pfw4")
 animation = &"up"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-shape = SubResource("CapsuleShape2D_gocwg")
+shape = SubResource("CapsuleShape2D_fgyxy")
 
+[connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
 [connection signal="body_entered" from="Player" to="Player" method="_on_body_entered"]
+[connection signal="hit" from="Player" to="." method="_on_player_hit"]
