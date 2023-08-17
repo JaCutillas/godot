@@ -2,6 +2,7 @@ extends Node2D
 
 @export var mob_scene: PackedScene
 var score
+var music_second = 0.0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -20,6 +21,9 @@ func _on_player_hit():
 
 
 func game_over():
+	music_second = $Music.get_playback_position()
+	$DeathSound.play()
+	$Music.stop()
 	$ScoreTimer.stop()
 	$MobTimer.stop()
 	get_tree().call_group("mobs", "queue_free")
@@ -27,7 +31,9 @@ func game_over():
 	print('game over')
 
 func new_game():
+	
 	score = 0
+	$Music.play(music_second)
 	$Player.start($StartPosition.position)
 	$StartTimer.start()
 	$HUD.update_score(score)
