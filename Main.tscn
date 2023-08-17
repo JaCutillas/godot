@@ -1,47 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://de3ou7ba2p32f"]
+[gd_scene load_steps=6 format=3 uid="uid://de3ou7ba2p32f"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_lnnda"]
-[ext_resource type="Texture2D" uid="uid://jc8v7ceb04s7" path="res://art/playerGrey_up1.png" id="1_lnuro"]
-[ext_resource type="Script" path="res://Player.gd" id="1_vn4at"]
-[ext_resource type="Texture2D" uid="uid://pm2cm3d2wy2m" path="res://art/playerGrey_up2.png" id="2_mbyy1"]
 [ext_resource type="PackedScene" uid="uid://bg3vv5uki8ym4" path="res://Mob.tscn" id="2_vppr2"]
-[ext_resource type="Texture2D" uid="uid://br3qj17kfe856" path="res://art/playerGrey_walk1.png" id="3_cjb3i"]
-[ext_resource type="Texture2D" uid="uid://dws7k4aa5e87u" path="res://art/playerGrey_walk2.png" id="4_vx4no"]
+[ext_resource type="PackedScene" uid="uid://cjp023y3ri0yp" path="res://Player.tscn" id="3_vy630"]
+[ext_resource type="PackedScene" uid="uid://cvgwefbodx44n" path="res://HUD.tscn" id="4_apnlg"]
 
 [sub_resource type="Curve2D" id="Curve2D_emob4"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, 0, 0, 0, 0, 0, 480, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0)
 }
 point_count = 5
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_0pfw4"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("1_lnuro")
-}, {
-"duration": 1.0,
-"texture": ExtResource("2_mbyy1")
-}],
-"loop": true,
-"name": &"up",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("3_cjb3i")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_vx4no")
-}],
-"loop": true,
-"name": &"walk",
-"speed": 5.0
-}]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fgyxy"]
-radius = 28.0
-height = 72.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_lnnda")
@@ -63,21 +31,10 @@ curve = SubResource("Curve2D_emob4")
 
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 
-[node name="Player" type="Area2D" parent="."]
-position = Vector2(1, 1)
-script = ExtResource("1_vn4at")
-metadata/_edit_group_ = true
+[node name="Player" parent="." instance=ExtResource("3_vy630")]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
-scale = Vector2(0.5, 0.5)
-sprite_frames = SubResource("SpriteFrames_0pfw4")
-animation = &"up"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-shape = SubResource("CapsuleShape2D_fgyxy")
+[node name="HUD" parent="." instance=ExtResource("4_apnlg")]
 
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
-[connection signal="body_entered" from="Player" to="Player" method="_on_body_entered"]
-[connection signal="hit" from="Player" to="." method="_on_player_hit"]
