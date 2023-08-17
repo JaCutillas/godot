@@ -17,7 +17,6 @@ func _process(delta):
 		velocity.x -= 1
 	if Input.is_action_pressed("move_down"):
 		velocity.y += 1
-		
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
 
