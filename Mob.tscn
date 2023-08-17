@@ -53,7 +53,7 @@ collision_mask = 0
 gravity_scale = 0.0
 script = ExtResource("1_bu8ux")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["mobs"]]
 scale = Vector2(0.75, 0.75)
 sprite_frames = SubResource("SpriteFrames_sftqu")
 animation = &"walk"

@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://5od3mg1idpl1"]
+
+[sub_resource type="Curve2D" id="Curve2D_emob4"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, 0, 0, 0, 0, 0, 480, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0)
+}
+point_count = 5
+
+[node name="MobPath" type="Path2D"]
+curve = SubResource("Curve2D_emob4")
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="."]
+
+[node name="_Timer_17944" type="Timer" parent="MobSpawnLocation"]
+wait_time = 3.0
+one_shot = true
